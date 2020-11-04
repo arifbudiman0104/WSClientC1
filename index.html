@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <title>
+            Arif Budiman Arrosyid - Web Service
+        </title>
+        <h3>
+            Web Service C
+        </h3>
+        <script src = 'jquery.min.js'></script>
+        <hr>
+    </head>
+    <body>
+        Data Server : <div id = 'view'></div>
+        <script>
+            let viewData = document.getElementById('view');
+            let myurl = 'http://localhost:8080/2018CWS1/webresources/mhs.mahasiswa';
+            $.ajax({
+            crossDomain: true,
+            url: myurl,
+            method: 'GET',
+            dataType: 'xml',
+            success: function (response) {
+                let htmlf = xml2html (response);
+                viewData.innerHTML = htmlf;
+                console.log(response);
+            },
+            fail: function () { alert('error') }
+        });
+
+        function xml2html (txml){
+            let text = txml.getElementsByTagName('mahasiswa');
+            let html = '<table border=1>';
+            html += "<tr> <th>No</th> <th>Nama</th> <th>NIM</th> </tr>";
+            for (row=0; row<text.length;row++){
+                html += "<tr>"+
+                         "<td>"+txml.getElementsByTagName('id')[row].childNodes[0].nodeValue+"</td>"+
+                         "<td>"+txml.getElementsByTagName('nama')[row].childNodes[0].nodeValue+"</td>"+
+                         "<td>"+txml.getElementsByTagName('nim')[row].childNodes[0].nodeValue+"</td>"+
+                         "</tr>";
+            }
+            html += '</table>'
+            return html;
+        }
+        </script>
+    </body>
+</html>
